@@ -11,107 +11,105 @@ struct ContentView: View {
     
     @State var timeRemaining: TimeInterval = 15
     @State private var totalTime: TimeInterval = 15
+    @State private var restTime: TimeInterval = 10
+    @State private var setsTime: Int = 3
     @State var timer: Timer?
     @State var isRunning: Bool = false
-//    @State var restartBtn: Bool = false
+    @State var isResting: Bool = false
+
     
     var body: some View {
         NavigationStack{
+        
             VStack(alignment: .center){
                 ZStack{
                     getCircle()
+                    
                     if isRunning {
                         Text(formattedTime())
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .padding()
                         
-                    } else {
+                        Text("HIIT セット回数残り: \(setsTime) セット")
+                            .font(.headline)
+                            .padding(.top, 90)
+                        
+                    }
+                    else if setsTime == 0 {
+                        
+                        Text("トレーニングモード 完了")
+                            .font(.title2)
+                        
+                    }
+                    
+                    else {
+                        
                         Text("トレーニングモード 開始")
                             .font(.title2)
+                        
                     }
+                      
                 }
             }
+            
                 .frame(maxWidth: 500)
                 .padding(.bottom, 50)
+             
                 
             
                 // start button
  
                 
             VStack(spacing: 10){
-                
+
                 Button {
-                    if isRunning {
+                    if !isRunning {
                    
-                        stopTimer()
-                       
-                    }
-                    else if !isRunning && timeRemaining != totalTime{
-                        restartTimer()
-                    }
-    
-                    else {
-                       
                         startTimer()
                      
                         
                     }
+                
+    
+                    else {
+                    
+                       
+                        stopTimer()
+                        
+
+                        
+                    }
       
                     isRunning.toggle()
-                    
+
                    
                     
                 } label: {
                     
                     if !isRunning{
-                        Text( "Start")
-                                .font(.largeTitle)
-                                .fixedSize(horizontal: true, vertical: false)
-                                .frame(maxWidth:.infinity)
-                                .foregroundStyle(.white)
-                                .background(.blue)
-                                .cornerRadius(10)
-                    }else if isRunning && timeRemaining != totalTime{
-                        
-                        Text("Restart")
-                            .font(.largeTitle)
-                            .fixedSize(horizontal: true, vertical: false)
-                             .frame(maxWidth: .infinity)
-                            .foregroundStyle(.white)
-                              .background(.blue)
-                              .cornerRadius(10)
-                       
+                        btn(text: "Start")
+
                     }
                     else{
                         
-                        Text( "Stop")
-                                .font(.largeTitle)
-                                .fixedSize(horizontal: true, vertical: false)
-                                .frame(maxWidth:.infinity)
-                                .foregroundStyle(.white)
-                                .background(.blue)
-                                .cornerRadius(10)
+                   
+                        btn(text: "Stop")
+
                     }
 
-                      
                 }
 
                 
-//                if isRunning && timeRemaining != totalTime{
-//                        Button {
-//                            restartTimer()
-//                        } label: {
-//                            Text("Restart")
-//                                .font(.largeTitle)
-//                                .fixedSize(horizontal: true, vertical: false)
-//                                .frame(maxWidth: .infinity)
-//                                .foregroundStyle(.white)
-//                                .background(.blue)
-//                                .cornerRadius(10)
-//                        }
-//                       
-//                    }
+                if isRunning && timeRemaining != totalTime{
+                        Button {
+                            restartTimer()
+                        } label: {
+                            btn(text: "Restart")
+
+                        }
+                       
+                    }
     
                 
             // reset button
@@ -120,19 +118,14 @@ struct ContentView: View {
                     Button {
                         resetTimer()
                     } label: {
-                        
-                        Text("reset")
-                            .font(.largeTitle)
-                            .fixedSize(horizontal: true, vertical: false)
-                            .frame(maxWidth:.infinity)
-                            .foregroundStyle(.white)
-                            .background(.blue)
-                            .cornerRadius(10)
+                        btn(text: "Reset")
                     }
                 }
                 
             }
-            .navigationTitle(isRunning ? "トレーニングモード" :  "HIIT")
+            .navigationTitle(!isRunning ? "HIIT" :
+                             !isResting ? "トレーニングモード": "休憩")
+            
 
                 // トレーニングタイム
             
@@ -141,29 +134,51 @@ struct ContentView: View {
                         Stepper(value: Binding(
                         get: { Int(totalTime) },
                          set: { newValue in
-                             if newValue >= 10 && newValue <= 25 {
+                             if newValue >= 3 && newValue <= 25 {
                         totalTime = TimeInterval(newValue)
                               timeRemaining = totalTime
-                        } else {
-//                                showAlert = true
-                                }
+                        }
                             }
-                        ), in: 10...25, step: 1) {
+                        ), in: 3...25, step: 1) {
                             Text("トレーニングタイム: \(Int(totalTime)) 秒")
                                 .font(.headline)
                 }
+                        
+                        Stepper(value: Binding(
+                            get: { Int(restTime) },
+                         set: { newValue in
+                             if newValue >= 3 && newValue <= 20 {
+                                 restTime = TimeInterval(newValue)
+                        }
+                            }
+                        ), in:3...25, step: 1) {
+                            Text("休憩インターバル: \(Int(restTime)) 秒")
+                                .font(.headline)
+                }
+                        
+                        Stepper(value: Binding(
+                                  get: { setsTime },
+                                  set: { newValue in
+                                      // fix that latter//////////
+                                      if newValue >= 1 && newValue <= 12 {
+                                          setsTime = newValue
+                                      }
+                                  }
+                              ), in: 1...12, step: 1) {
+                                  Text("HIIT セット回数: \(setsTime) セット")
+                                      .font(.headline)
+                              }
+ 
             }
                 .padding()
+                    
         }
             
+            
     }
-            .padding(.horizontal, 30)
+        
 
 }
-    
-    
-    
-
     
     func getCircle() -> some View {
         
@@ -178,41 +193,117 @@ struct ContentView: View {
                     .trim(from: 0, to: CGFloat(1 - (timeRemaining / totalTime)))
                     .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                     .rotation(Angle(degrees: -90))
-                    .scaleEffect(x: -1, y: 1)
-                    .foregroundStyle(.red)
+                    .scaleEffect(x : -1, y: 1)
+                    .foregroundStyle(isResting ? .green:.red)
                     .animation(.linear(duration: 1), value: timeRemaining)
+                
+             
 
-            
         }
         .frame(width: 300, height: 300)
+        
 
-      
     }
+    
 
+    func btn(text: String) -> some View{
+        
+        Text(text)
+        .font(.largeTitle)
+        .fixedSize(horizontal: true, vertical: false)
+        .frame(maxWidth:.infinity)
+        .foregroundStyle(.white)
+        .background(.blue)
+        .cornerRadius(10)
+        .padding(.horizontal, 50)
+        
+    }
     
     
     
     
-    func formattedTime()-> String{
+    func formattedTime()-> String {
         let minutes = Int(timeRemaining)/60
         let second = Int(timeRemaining) % 60
         return String(format:"%02d:%02d", minutes, second)
     }
     
     
-    
-    func startTimer(){
 
+    func startTimer() {
+        
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true){_ in
-            if timeRemaining > 0{
+
+        guard setsTime != 0  else{ return self.resetTimer()}
+
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+          
+            if timeRemaining > 0 {
+                
                 timeRemaining -= 1
-            }else{
-                stopTimer()
+                
             }
+            
+            else  {
+       
+                switchToRest()
+
+             
+            }
+          
         }
     }
+
     
+    func switchToRest() {
+        
+
+        if setsTime != 0{
+            isResting.toggle()
+        }
+        
+ 
+        if isResting {
+            setTimer()
+        }
+        
+        
+        timeRemaining = restTime
+        
+        
+        timer?.invalidate()
+        
+        guard setsTime != 0  else{ return self.resetTimer()}
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            
+            if timeRemaining > 0 && setsTime > 0 {
+                
+                timeRemaining -= 1
+                
+            }
+            
+            else {
+              
+                    startTimer()
+             
+            }
+            
+        }
+    }
+
+    
+    
+
+    
+    func setTimer() {
+            // Reduce the set count only when workout phase ends
+        if setsTime > 0 {
+            
+                setsTime -= 1
+
+        }
+
+    }
     
     
     func resetTimer(){
@@ -220,15 +311,20 @@ struct ContentView: View {
         timer?.invalidate()
         timeRemaining = totalTime
         isRunning = false
-
+        isResting = false
+        setsTime = 8
+        
     }
         
+    
     
     
     func stopTimer(){
         timer?.invalidate()
         isRunning = false
     }
+    
+    
     
     func restartTimer() {
           timer?.invalidate()
