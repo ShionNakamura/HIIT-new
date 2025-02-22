@@ -248,7 +248,7 @@ struct ContentView: View {
                 
             } else {
                 
-               self.resetTimer()
+                self.switchToRest()
                             
             }
         }
