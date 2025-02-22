@@ -2,8 +2,8 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var timeRemaining: TimeInterval = 25
-    @State private var totalTime: TimeInterval = 15
+    @State var timeRemaining: TimeInterval = 30
+    @State private var totalTime: TimeInterval = 30
     @State private var restTime: TimeInterval = 10
     @State private var setsTime: Int = 3
     @State var timer: Timer?
@@ -14,7 +14,6 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-            // Make background fill the entire screen
                 VStack {
                     if setsTime != 0 {
                         VStack(alignment: .center) {
@@ -38,17 +37,19 @@ struct ContentView: View {
                                 }
                                 
                             }
+                            
                         }
                         .frame(maxWidth: 500)
                         .padding(.bottom, 50)
                     } else {
+                        
                         Text("トレーニングモード 終了")
                             .font(.title)
                         Text("今日もお疲れ様でした 🙌👏")
                             .font(.title)
                     }
+                        
 
-                    // Start button
                     if setsTime != 0 {
                         VStack(spacing: 10) {
                             
@@ -67,7 +68,6 @@ struct ContentView: View {
                                 isRunning.toggle()
 
                                 
-                                // Reset the stopped state when starting or stopping
                                 
                             } label: {
                                 
@@ -88,7 +88,6 @@ struct ContentView: View {
                                 }
                             }
                             
-                            // Show Restart and Reset buttons only when stopped
                             if isStopped {
                                 Button {
                                     
@@ -115,14 +114,12 @@ struct ContentView: View {
                         }
                         
                         .navigationTitle(!isRunning ? "HIIT" :
-                                            !isResting ? "トレーニングモード" :
-                                            setsTime == 0 ? "トレーニングモード完了" : "休憩")
+                                            !isResting ? "トレーニングモード 🔥 " :
+                                            setsTime == 0 ? "トレーニングモード完了" : "休憩  ")
                     
-                        
                        
                     }
                     
-                    // Traning Time Steps
                     if !isRunning {
                         withAnimation(){
                             VStack {
@@ -130,14 +127,16 @@ struct ContentView: View {
                                     Stepper(value: Binding(
                                         get: { Int(totalTime) },
                                         set: { newValue in
-                                            if newValue >= 3 && newValue <= 30 {
+                                            if newValue >= 20 && newValue <= 30 {
                                                 totalTime = TimeInterval(newValue)
                                                 timeRemaining = totalTime
+                                                
+                                           
                                             }
                                             
                                         }
-                                    ), in: 3...30, step: 1) {
-                                        Text(" トレーニングタイム: \(Int(totalTime)) 秒")
+                                    ), in: 20...30, step: 1) {
+                                        Text("トレーニングタイム: \(Int(totalTime)) 秒")
                                             .font(.headline)
                                     }
                                     
@@ -145,11 +144,13 @@ struct ContentView: View {
                                     Stepper(value: Binding(
                                         get: { Int(restTime) },
                                         set: { newValue in
-                                            if newValue >= 3 && newValue <= 20 {
+                                            if newValue >= 10 && newValue <= 20 {
                                                 restTime = TimeInterval(newValue)
+                                                
+                                                
                                             }
                                         }
-                                    ), in: 3...25, step: 1) {
+                                    ), in: 10...20, step: 1) {
                                         Text("休憩インターバル: \(Int(restTime)) 秒")
                                             .font(.headline)
                                     }
@@ -187,19 +188,14 @@ struct ContentView: View {
                             .stroke(lineWidth: 20)
                             .opacity(0.2)
 
-                    
-                      
                             Circle()
-
                                 .trim(from: 0, to: CGFloat(1 - (timeRemaining / totalTime)))
                                 .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                                 .rotation(Angle(degrees: -90))
                                 .scaleEffect(x: -1, y: 1)
                                 .foregroundStyle(isResting ? .green : .red)
                             .animation(timeRemaining == totalTime ? nil : .linear(duration: 1), value: timeRemaining)
-                   
-
-                        
+                
                        
                     }
                     .frame(width: 300, height: 300)
@@ -226,24 +222,22 @@ struct ContentView: View {
     }
 
     func formattedTime() -> String {
+        
         let minutes = Int(timeRemaining) / 60
         let second = Int(timeRemaining) % 60
         return String(format: "%02d:%02d", minutes, second)
+        
     }
 
-    
     
     func startTimer() {
         
         isResting = false
         timer?.invalidate()
-        
         timeRemaining = totalTime
         
         guard setsTime != 0 else {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.resetTimer()
-//            }
             return
         }
 
@@ -254,18 +248,17 @@ struct ContentView: View {
                 
             } else {
                 
-                switchToRest()
-                
+               self.resetTimer()
+                            
             }
         }
     }
     
     
-    
 
     func switchToRest() {
         if setsTime != 0 {
-            isResting = true
+            isResting.toggle()
         }
 
         if isResting {
@@ -304,28 +297,29 @@ struct ContentView: View {
 
     func resetTimer() {
         timer?.invalidate()
-        timeRemaining = totalTime
-        timeRemaining =  25
+        timeRemaining = 25
+        totalTime = 25
         restTime = 10
+        setsTime = 8
         isRunning = false
         isResting = false
-        setsTime = 8
-        isStopped = false // Reset the stopped state when reset
+        isStopped = false
     }
 
     
     func stopTimer() {
         timer?.invalidate()
         isRunning = false
-        isStopped = true // Set the stopped state to true to show Restart and Reset options
+        isStopped = true
     }
     
     
 
     func restartTimer() {
-        timer?.invalidate()
-        startTimer()
-        isStopped = false // Reset stopped state when restarting
+            timer?.invalidate()
+            startTimer()
+            isStopped = false
+        
     }
 
 }
@@ -333,4 +327,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
 
