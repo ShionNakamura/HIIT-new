@@ -38,3 +38,7 @@ https://github.com/user-attachments/assets/6e025bf1-50e9-4d7c-9c2c-4e5a2891c496
 終わりに
 --
 このアプリは、HIITトレーニングをより効率的に、そして楽しく継続できるように設計しました。今後も機能追加や改善を進め、より便利なツールになるようアップデートを続けていきます！
+
+アプリのダウンロードはこちら
+--
+https://apps.apple.com/us/app/the-hiit/id6742344515?platform=iphone
