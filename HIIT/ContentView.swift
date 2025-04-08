@@ -45,7 +45,7 @@ struct ContentView: View {
                         
                         Text("トレーニングモード 終了")
                             .font(.title)
-                        Text("今日もお疲れ様でした 🙌👏")
+                        Text("今日もお疲れ様でした!! 🙌👏")
                             .font(.title)
                     }
                         
