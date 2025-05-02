@@ -46,5 +46,6 @@ https://github.com/user-attachments/assets/5d66744e-4a99-4152-84f3-8f537b6f660c
 email: shionnakamura0120@gmail.com
 
 📲 アプリのダウンロードはこちらから
+--
 https://apps.apple.com/us/app/riselyft/id6742440472?platform=iphone
 
