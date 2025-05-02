@@ -41,7 +41,10 @@ https://github.com/user-attachments/assets/5d66744e-4a99-4152-84f3-8f537b6f660c
 終わりに
 --
 このアプリは、HIITトレーニングをより効率的に、そして楽しく継続できるように設計しました。今後も機能追加や改善を進め、より便利なツールになるようアップデートを続けていきます！
+お問い合わせ
+バグ報告やフィードバック等は、以下のフォームから送信できます。
+email: shionnakamura0120@gmail.com
 
-アプリのダウンロードはこちら
---
-https://apps.apple.com/us/app/the-hiit/id6742344515?platform=iphone
+📲 アプリのダウンロードはこちらから
+https://apps.apple.com/us/app/riselyft/id6742440472?platform=iphone
+
