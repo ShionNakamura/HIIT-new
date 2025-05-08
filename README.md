@@ -33,7 +33,7 @@ https://github.com/user-attachments/assets/5d66744e-4a99-4152-84f3-8f537b6f660c
 - UIフレームワーク: SwiftUI
 
 
-実装予定の機能
+今後追加したい実装予定の機能
 --
 - 通知機能:タイマーが終了した際にアラートやバイブレーションを追加予定
 - データ管理の追加　(UserDefaults検討中)
