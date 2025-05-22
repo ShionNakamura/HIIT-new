@@ -46,7 +46,7 @@ https://github.com/user-attachments/assets/5d66744e-4a99-4152-84f3-8f537b6f660c
 --
 バグ報告やフィードバック等は、以下のフォームから送信できます。
 
-email: shionnakamura0120@gmail.com
+📩 email: shionnakamura0120@gmail.com
 
 📲 アプリのダウンロードはこちらから
 --
