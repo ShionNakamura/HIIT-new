@@ -1,4 +1,5 @@
 import SwiftUI
+import AudioToolbox
 
 struct ContentView: View {
     
@@ -10,6 +11,8 @@ struct ContentView: View {
     @State var isRunning: Bool = false
     @State var isResting: Bool = false
     @State var isStopped: Bool = false
+    
+    
     
     var body: some View {
         NavigationStack {
@@ -47,6 +50,11 @@ struct ContentView: View {
                             .font(.title)
                         Text("今日もお疲れ様でした!! 🙌👏")
                             .font(.title)
+                            .onAppear(){
+                                vibrate()
+                                playSound()
+                            }
+                        
                     }
                         
 
@@ -171,6 +179,8 @@ struct ContentView: View {
                             .padding()
                         }
                     }
+                    
+                 
                 }
             }
         }
@@ -321,6 +331,19 @@ struct ContentView: View {
             isStopped = false
         
     }
+    
+    func vibrate() {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+    }
+    
+    func playSound() {
+        if let soundURL = Bundle.main.url(forResource: "finish", withExtension: "wav") {
+            var soundID: SystemSoundID = 0
+            AudioServicesCreateSystemSoundID(soundURL as CFURL, &soundID)
+            AudioServicesPlaySystemSound(soundID)
+        }
+    }
+ 
 
 }
 
