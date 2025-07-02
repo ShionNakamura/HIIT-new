@@ -33,7 +33,7 @@ https://github.com/user-attachments/assets/5d66744e-4a99-4152-84f3-8f537b6f660c
 - UIフレームワーク: SwiftUI
 
 
-アップデート
+✅アップデート
 --
 - 通知機能:タイマーが終了したバイブレーションの追加をしました
 
