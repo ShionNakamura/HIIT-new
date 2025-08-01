@@ -31,9 +31,10 @@ https://github.com/user-attachments/assets/5d66744e-4a99-4152-84f3-8f537b6f660c
 --
 - 開発言語: Swift
 - UIフレームワーク: SwiftUI
-- audiotool box
 ✅アップデート
+
 --
+- audiotool box
 - 通知機能:タイマーが終了したバイブレーションの追加をしました
 
 
